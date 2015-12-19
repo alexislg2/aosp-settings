@@ -59,6 +59,11 @@ import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
+//ALG
+import android.view.MotionEvent;
+import android.os.CountDownTimer;
+//FIN ALG
+
 import com.android.internal.util.ArrayUtils;
 import com.android.settings.accessibility.AccessibilitySettings;
 import com.android.settings.accessibility.CaptionPropertiesFragment;
@@ -173,6 +178,11 @@ public class Settings extends PreferenceActivity
     private boolean mListeningToAccountUpdates;
 
     private boolean mBatteryPresent = true;
+
+    //ALG
+    CountDownTimer countDownTimer;
+    //FIN ALG
+
     private BroadcastReceiver mBatteryInfoReceiver = new BroadcastReceiver() {
 
         @Override
@@ -240,6 +250,18 @@ public class Settings extends PreferenceActivity
             getActionBar().setDisplayHomeAsUpEnabled(false);
             getActionBar().setHomeButtonEnabled(false);
         }
+
+        //ALG
+        countDownTimer = new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                //TODO: Do something every second
+            }
+
+            public void onFinish() {
+                finish();
+            }
+        }.start();
+        //FIN ALG
     }
 
     @Override
@@ -254,6 +276,19 @@ public class Settings extends PreferenceActivity
             outState.putParcelable(SAVE_KEY_PARENT_HEADER, mParentHeader);
         }
     }
+
+    // ALG
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        // TODO Auto-generated method stub
+        super.dispatchTouchEvent(ev);
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer.start();
+        }
+        return true;
+    }
+    // Fin ALG
 
     @Override
     public void onResume() {
