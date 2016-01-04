@@ -62,6 +62,8 @@ import android.widget.TextView;
 //ALG
 import android.view.MotionEvent;
 import android.os.CountDownTimer;
+import android.view.Window;
+import android.view.WindowManager;
 //FIN ALG
 
 import com.android.internal.util.ArrayUtils;
@@ -203,6 +205,11 @@ public class Settings extends PreferenceActivity
     protected void onCreate(Bundle savedInstanceState) {
         if (getIntent().hasExtra(EXTRA_UI_OPTIONS)) {
             getWindow().setUiOptions(getIntent().getIntExtra(EXTRA_UI_OPTIONS, 0));
+            
+            //ALG
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            //FIN ALG
         }
 
         mAuthenticatorHelper = new AuthenticatorHelper();
@@ -214,7 +221,11 @@ public class Settings extends PreferenceActivity
 
         getMetaData();
         mInLocalHeaderSwitch = true;
+
         super.onCreate(savedInstanceState);
+
+
+
         mInLocalHeaderSwitch = false;
 
         if (!onIsHidingHeaders() && onIsMultiPane()) {
