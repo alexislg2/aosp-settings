@@ -121,6 +121,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+//ALG
+import android.view.MotionEvent;
+import android.os.CountDownTimer;
+import android.view.Window;
+import android.view.WindowManager;
+//FIN ALG
+
+
 import static com.android.settings.dashboard.DashboardTile.TILE_ID_UNDEFINED;
 
 public class SettingsActivity extends Activity
@@ -314,6 +322,11 @@ public class SettingsActivity extends Activity
     private SharedPreferences.OnSharedPreferenceChangeListener mDevelopmentPreferencesListener;
 
     private boolean mBatteryPresent = true;
+
+    //ALG
+    CountDownTimer countDownTimer;
+    //FIN ALG
+
     private BroadcastReceiver mBatteryInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -496,6 +509,11 @@ public class SettingsActivity extends Activity
             getWindow().setUiOptions(intent.getIntExtra(EXTRA_UI_OPTIONS, 0));
         }
 
+        //ALG
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //FIN ALG
+
         mDevelopmentPreferences = getSharedPreferences(DevelopmentSettings.PREF_FILE,
                 Context.MODE_PRIVATE);
 
@@ -536,6 +554,19 @@ public class SettingsActivity extends Activity
         if (mIsShowingDashboard) {
             Index.getInstance(getApplicationContext()).update();
         }
+
+
+        //ALG
+        countDownTimer = new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                //TODO: Do something every second
+            }
+
+            public void onFinish() {
+                finish();
+            }
+        }.start();
+        //FIN ALG
 
         if (savedState != null) {
             // We are restarting from a previous saved state; used that to initialize, instead
@@ -749,6 +780,19 @@ public class SettingsActivity extends Activity
 
         outState.putInt(SAVE_KEY_HOME_ACTIVITIES_COUNT, mHomeActivitiesCount);
     }
+
+    // ALG
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        // TODO Auto-generated method stub
+        super.dispatchTouchEvent(ev);
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer.start();
+        }
+        return true;
+    }
+    // Fin ALG
 
     @Override
     public void onResume() {
